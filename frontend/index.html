@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Flo — Expense Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-mark">◈</span>
+        <span class="logo-text">Flo</span>
+      </div>
+      <nav class="nav">
+        <button class="nav-btn active" data-view="dashboard">Dashboard</button>
+        <button class="nav-btn" data-view="expenses">Expenses</button>
+        <button class="nav-btn" data-view="filter">Filter</button>
+      </nav>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="theme-icon">☀</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- DASHBOARD VIEW -->
+    <section class="view active" id="view-dashboard">
+      <div class="page-title">
+        <h1>Good to see you<span class="accent">.</span></h1>
+        <p class="subtitle">Here's where your money went.</p>
+      </div>
+
+      <div class="summary-grid" id="summaryGrid">
+        <div class="summary-card total">
+          <span class="card-label">Total Spent</span>
+          <span class="card-value" id="totalSpent">R 0.00</span>
+        </div>
+        <div class="summary-card">
+          <span class="card-label">Categories</span>
+          <span class="card-value" id="totalCategories">0</span>
+        </div>
+        <div class="summary-card">
+          <span class="card-label">Expenses</span>
+          <span class="card-value" id="totalExpenses">0</span>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <h2>By Category</h2>
+      </div>
+      <div class="category-list" id="categoryList">
+        <div class="empty-state">No data yet. Add some expenses.</div>
+      </div>
+    </section>
+
+    <!-- EXPENSES VIEW -->
+    <section class="view" id="view-expenses">
+      <div class="page-title">
+        <h1>Expenses<span class="accent">.</span></h1>
+        <p class="subtitle">Track every cent.</p>
+      </div>
+
+      <!-- ADD FORM -->
+      <div class="card form-card">
+        <h3 class="form-title">Add Expense</h3>
+        <div class="form-row">
+          <div class="field">
+            <label>Name</label>
+            <input type="text" id="expenseName" placeholder="e.g. Uber ride" />
+          </div>
+          <div class="field field-sm">
+            <label>Amount (R)</label>
+            <input type="number" id="expenseAmount" placeholder="0.00" step="0.01" />
+          </div>
+          <div class="field field-sm">
+            <label>Category</label>
+            <input type="text" id="expenseCategory" placeholder="e.g. Transport" />
+          </div>
+          <button class="btn btn-primary" id="addBtn">Add</button>
+        </div>
+        <p class="form-error hidden" id="formError">Please fill in all fields.</p>
+      </div>
+
+      <!-- SEARCH -->
+      <div class="search-wrap">
+        <input type="text" id="searchInput" placeholder="Search expenses..." class="search-input" />
+      </div>
+
+      <!-- EXPENSE TABLE -->
+      <div class="card table-card">
+        <table class="expense-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="expenseTableBody">
+            <tr><td colspan="5" class="empty-cell">No expenses yet.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- FILTER VIEW -->
+    <section class="view" id="view-filter">
+      <div class="page-title">
+        <h1>Filter<span class="accent">.</span></h1>
+        <p class="subtitle">Slice through your data.</p>
+      </div>
+
+      <div class="card form-card">
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-filter="category">By Category</button>
+          <button class="filter-tab" data-filter="month">By Month</button>
+          <button class="filter-tab" data-filter="range">By Date Range</button>
+        </div>
+
+        <!-- Category filter -->
+        <div class="filter-panel active" id="filter-category">
+          <div class="form-row">
+            <div class="field">
+              <label>Category</label>
+              <input type="text" id="filterCategory" placeholder="e.g. Groceries" />
+            </div>
+            <button class="btn btn-primary" onclick="applyFilter('category')">Search</button>
+          </div>
+        </div>
+
+        <!-- Month filter -->
+        <div class="filter-panel" id="filter-month">
+          <div class="form-row">
+            <div class="field field-sm">
+              <label>Month</label>
+              <input type="number" id="filterMonth" placeholder="3" min="1" max="12" />
+            </div>
+            <div class="field field-sm">
+              <label>Year</label>
+              <input type="number" id="filterYear" placeholder="2026" />
+            </div>
+            <button class="btn btn-primary" onclick="applyFilter('month')">Search</button>
+          </div>
+        </div>
+
+        <!-- Date range filter -->
+        <div class="filter-panel" id="filter-range">
+          <div class="form-row">
+            <div class="field">
+              <label>Start Date</label>
+              <input type="date" id="filterStart" />
+            </div>
+            <div class="field">
+              <label>End Date</label>
+              <input type="date" id="filterEnd" />
+            </div>
+            <button class="btn btn-primary" onclick="applyFilter('range')">Search</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card table-card">
+        <table class="expense-table">
+          <thead>
+            <tr><th>Name</th><th>Category</th><th>Amount</th><th>Date</th></tr>
+          </thead>
+          <tbody id="filterTableBody">
+            <tr><td colspan="4" class="empty-cell">Apply a filter above.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- EDIT MODAL -->
+  <div class="modal-overlay hidden" id="editModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>Edit Expense</h3>
+        <button class="modal-close" id="closeModal">✕</button>
+      </div>
+      <input type="hidden" id="editId" />
+      <div class="field">
+        <label>Name</label>
+        <input type="text" id="editName" />
+      </div>
+      <div class="field">
+        <label>Amount (R)</label>
+        <input type="number" id="editAmount" step="0.01" />
+      </div>
+      <div class="field">
+        <label>Category</label>
+        <input type="text" id="editCategory" />
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" id="cancelEdit">Cancel</button>
+        <button class="btn btn-primary" id="saveEdit">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast hidden" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

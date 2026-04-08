@@ -1,0 +1,23 @@
+[
+    {
+        "id": "f27c97f6-9f6a-4319-9505-3fdff2ee5a30",
+        "name": "Neflix subscription",
+        "amount": 59.0,
+        "category": "Entertainment",
+        "date": "2026-03-22 04:38:12"
+    },
+    {
+        "id": "d993483f-6390-49f7-88f2-496f7fcc4909",
+        "name": "Uber right",
+        "amount": 100.0,
+        "category": "Transport",
+        "date": "2026-03-22 05:29:23"
+    },
+    {
+        "id": "38b050ac-bdf7-4b02-a5a3-d2a0a107b813",
+        "name": "My ting",
+        "amount": 2500.0,
+        "category": "Other",
+        "date": "2026-03-22 12:04:38"
+    }
+]
