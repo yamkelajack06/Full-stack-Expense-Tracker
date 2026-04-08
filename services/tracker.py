@@ -147,5 +147,3 @@ class Expense_Tracker:
             "spending_by_category": spending_by_category,
             "total": total_spending
         }
-
-class TimeTracker extends C
